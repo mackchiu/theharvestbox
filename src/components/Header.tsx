@@ -11,7 +11,7 @@ export const Header = () => {
             <Leaf className="w-5 h-5 text-accent-foreground" />
           </div>
           <span className="font-display text-xl font-bold text-foreground">
-            Fresh<span className="text-primary">Box</span>
+            The Harvest<span className="text-primary"> Box</span>
           </span>
         </Link>
         

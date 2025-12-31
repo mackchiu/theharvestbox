@@ -2,11 +2,6 @@ import { Leaf, Clock, Award, Recycle } from "lucide-react";
 
 const features = [
   {
-    icon: Leaf,
-    title: "100% Organic",
-    description: "All our fruits are certified organic, grown without harmful pesticides.",
-  },
-  {
     icon: Clock,
     title: "Flexible Delivery",
     description: "Choose your delivery day and easily pause or skip weeks when needed.",

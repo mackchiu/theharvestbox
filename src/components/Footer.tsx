@@ -12,7 +12,7 @@ export const Footer = () => {
                 <Leaf className="w-5 h-5 text-accent-foreground" />
               </div>
               <span className="font-display text-xl font-bold">
-                Fresh<span className="text-primary">Box</span>
+                The Harvest<span className="text-primary"> Box</span>
               </span>
             </Link>
             
@@ -63,7 +63,7 @@ export const Footer = () => {
         </div>
         
         <div className="border-t border-background/20 pt-8 text-center text-background/60 text-sm">
-          <p>&copy; {new Date().getFullYear()} FreshBox. All rights reserved. Made with 💚 for healthy living.</p>
+          <p>&copy; {new Date().getFullYear()} The Harvest Box. All rights reserved. Made with 💚 for healthy living.</p>
         </div>
       </div>
     </footer>

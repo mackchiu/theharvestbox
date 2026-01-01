@@ -4,19 +4,19 @@ const steps = [
   {
     icon: Package,
     title: "Choose Your Box",
-    description: "Select from our variety of seasonal fruit boxes tailored to your preferences and dietary needs.",
+    description: "Select the perfect size to fit your household's snacking needs.",
     emoji: "📦",
   },
   {
     icon: Truck,
-    title: "We Deliver Fresh",
-    description: "Your hand-picked fruits are carefully packed and delivered straight to your doorstep weekly.",
+    title: "Delivered Weekly",
+    description: "Your fresh fruit box arrives reliably at your doorstep, week after week.",
     emoji: "🚚",
   },
   {
     icon: Heart,
-    title: "Enjoy & Repeat",
-    description: "Savor the freshest fruits and never worry about grocery shopping again. Cancel anytime.",
+    title: "Enjoy & Thrive",
+    description: "Savor delicious, healthy snacks without the effort.",
     emoji: "💚",
   },
 ];

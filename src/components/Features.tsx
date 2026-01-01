@@ -1,20 +1,25 @@
-import { Leaf, Clock, Award, Recycle } from "lucide-react";
+import { Sparkles, Clock, Award, Heart } from "lucide-react";
 
 const features = [
   {
+    icon: Sparkles,
+    title: "Peak Freshness",
+    description: "Hand-picked and packed just for you, guaranteeing ripeness and flavor.",
+  },
+  {
     icon: Clock,
-    title: "Flexible Delivery",
-    description: "Choose your delivery day and easily pause or skip weeks when needed.",
+    title: "Ultimate Convenience",
+    description: "Delivered weekly, saving you precious time and hassle.",
+  },
+  {
+    icon: Heart,
+    title: "Healthy Habits Made Simple",
+    description: "A diverse selection of fruits to keep your energy levels high and your body happy.",
   },
   {
     icon: Award,
-    title: "Premium Quality",
-    description: "Hand-selected at peak ripeness for the best taste and nutrition.",
-  },
-  {
-    icon: Recycle,
-    title: "Eco-Friendly",
-    description: "Sustainable packaging that's 100% recyclable and compostable.",
+    title: "Consistent Quality",
+    description: "We partner with trusted growers to bring you the best, every time.",
   },
 ];
 
@@ -24,10 +29,10 @@ export const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Why Choose FreshBox?
+            Why Choose The Harvest Box?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            We're committed to bringing you the freshest, healthiest fruits sustainably.
+            Tired of grocery store runs for fruit that isn't quite fresh? We bring the orchard to you.
           </p>
         </div>
 

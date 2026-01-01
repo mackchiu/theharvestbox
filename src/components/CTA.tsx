@@ -12,23 +12,23 @@ export const CTA = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center bg-card rounded-3xl p-12 shadow-card">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-card-foreground mb-4">
-            Ready for Fresh Fruit?
+            Your Weekly Dose of Delicious Health
           </h2>
           
           <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of happy subscribers enjoying fresh, organic fruits delivered weekly.
-            Start your subscription today!
+            Experience the ultimate convenience of fresh fruit, tailored for your healthy lifestyle.
+            Join us in rediscovering the pure joy and benefits of truly fresh fruit.
           </p>
           
           <Button variant="hero" size="xl" asChild>
             <a href="#boxes">
-              Get Started Now
+              Choose Your Fresh Fruit Box!
               <ArrowRight className="w-5 h-5" />
             </a>
           </Button>
           
           <p className="text-sm text-muted-foreground mt-6">
-            No commitment. Cancel anytime. 100% satisfaction guaranteed.
+            Flexible & convenient. Skip a week, pause, or cancel anytime.
           </p>
         </div>
       </div>

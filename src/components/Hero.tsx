@@ -20,24 +20,22 @@ export const Hero = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full mb-8 animate-fade-in">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-secondary-foreground">Fresh from farm to your doorstep</span>
+            <span className="text-sm font-medium text-secondary-foreground">Your weekly source of vibrant, farm-fresh fruit</span>
           </div>
           
           <h1 className="font-display text-5xl md:text-7xl font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            Fresh Fruit,{" "}
-            <span className="text-gradient">Delivered</span>{" "}
-            Weekly
+            Freshness Delivered.{" "}
+            <span className="text-gradient">Health Made Easy.</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-xl mx-auto opacity-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            Subscribe to seasonal, hand-picked fruit boxes delivered straight to your door. 
-            Healthy eating made effortless.
+            Fuel your healthy lifestyle effortlessly with vibrant, farm-fresh fruit delivered straight to your door.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <Button variant="hero" size="xl" asChild>
               <a href="#boxes">
-                Start Your Subscription
+                Get Your Fresh Box Today!
                 <ArrowRight className="w-5 h-5" />
               </a>
             </Button>
@@ -55,8 +53,8 @@ export const Hero = () => {
             </div>
             <div className="w-px h-12 bg-border" />
             <div className="text-center">
-              <div className="text-3xl font-bold text-foreground">100%</div>
-              <div className="text-sm text-muted-foreground">Organic Fruits</div>
+              <div className="text-3xl font-bold text-foreground">Peak</div>
+              <div className="text-sm text-muted-foreground">Freshness</div>
             </div>
             <div className="w-px h-12 bg-border" />
             <div className="text-center">

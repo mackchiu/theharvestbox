@@ -58,6 +58,7 @@ const ProductPage = () => {
   const [selectedVariant, setSelectedVariant] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [purchaseType, setPurchaseType] = useState<"subscription" | "one-time">("subscription");
   
   const addItem = useCartStore((state) => state.addItem);
 
@@ -189,12 +190,60 @@ const ProductPage = () => {
                 {product.title}
               </h1>
 
+              {/* Purchase Type Toggle */}
               <div className="mb-6">
-                <span className="text-4xl font-bold text-primary">
-                  {currentVariant?.price.currencyCode || "USD"}{" "}
-                  {parseFloat(currentVariant?.price.amount || "0").toFixed(2)}
-                </span>
-                <span className="text-lg text-muted-foreground">/box</span>
+                <label className="block text-sm font-semibold mb-3">
+                  Purchase Type
+                </label>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setPurchaseType("subscription")}
+                    className={`flex-1 px-4 py-3 rounded-lg border-2 transition-all text-left ${
+                      purchaseType === "subscription"
+                        ? "border-primary bg-primary/10"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <div className="font-semibold">Subscribe & Save</div>
+                    <div className="text-sm text-muted-foreground">Best value • Weekly delivery</div>
+                  </button>
+                  <button
+                    onClick={() => setPurchaseType("one-time")}
+                    className={`flex-1 px-4 py-3 rounded-lg border-2 transition-all text-left ${
+                      purchaseType === "one-time"
+                        ? "border-primary bg-primary/10"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <div className="font-semibold">One-Time Purchase</div>
+                    <div className="text-sm text-muted-foreground">No commitment</div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Price Display */}
+              <div className="mb-6">
+                {(() => {
+                  const basePrice = parseFloat(currentVariant?.price.amount || "0");
+                  const displayPrice = purchaseType === "one-time" 
+                    ? basePrice * 1.15 
+                    : basePrice;
+                  const currency = currentVariant?.price.currencyCode || "USD";
+                  
+                  return (
+                    <div className="flex items-baseline gap-3">
+                      <span className="text-4xl font-bold text-primary">
+                        {currency} {displayPrice.toFixed(2)}
+                      </span>
+                      <span className="text-lg text-muted-foreground">/box</span>
+                      {purchaseType === "subscription" && (
+                        <span className="text-sm text-primary font-medium bg-primary/10 px-2 py-1 rounded">
+                          Save 15%
+                        </span>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
               <div className="text-muted-foreground text-lg mb-8 space-y-4">

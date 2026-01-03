@@ -1,31 +1,28 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen gradient-hero overflow-hidden pt-16">
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-fruit-orange/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-48 h-48 bg-fruit-green/10 rounded-full blur-3xl" />
-      <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-fruit-yellow/20 rounded-full blur-2xl" />
+    <section className="relative min-h-screen bg-cardboard overflow-hidden pt-16">
+      {/* Subtle decorative elements */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-forest/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-48 h-48 bg-earth/5 rounded-full blur-3xl" />
       
-      {/* Floating fruit emojis */}
-      <div className="absolute top-32 right-[15%] text-6xl animate-float opacity-80">🍊</div>
-      <div className="absolute top-48 left-[10%] text-5xl animate-float-delayed opacity-80">🍓</div>
-      <div className="absolute bottom-32 right-[20%] text-5xl animate-float opacity-80">🥝</div>
-      <div className="absolute top-[60%] left-[15%] text-4xl animate-float-delayed opacity-80">🍋</div>
-      <div className="absolute bottom-48 left-[25%] text-6xl animate-float opacity-80">🍎</div>
-      
-      <div className="container mx-auto px-4 pt-20 pb-32 relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full mb-8 animate-fade-in">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-secondary-foreground">Your weekly source of vibrant, farm-fresh fruit</span>
+      <div className="container mx-auto px-4 pt-12 pb-32 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Large centered logo */}
+          <div className="mb-8 opacity-0 animate-fade-in">
+            <img 
+              src={logo} 
+              alt="The Harvest Box" 
+              className="mx-auto w-64 md:w-80 h-auto drop-shadow-lg"
+            />
           </div>
           
-          <h1 className="font-display text-5xl md:text-7xl font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             Freshness Delivered.{" "}
-            <span className="text-gradient">Health Made Easy.</span>
+            <span className="text-primary">Health Made Easy.</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-xl mx-auto opacity-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -39,7 +36,7 @@ export const Hero = () => {
                 <ArrowRight className="w-5 h-5" />
               </a>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+            <Button variant="outline" size="lg" asChild className="border-foreground/30 text-foreground hover:bg-foreground/10">
               <a href="#how-it-works">
                 Learn More
               </a>
@@ -48,17 +45,17 @@ export const Hero = () => {
           
           <div className="mt-16 flex items-center justify-center gap-8 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <div className="text-center">
-              <div className="text-3xl font-bold text-foreground">5000+</div>
+              <div className="text-3xl font-bold text-foreground font-display">5000+</div>
               <div className="text-sm text-muted-foreground">Happy Subscribers</div>
             </div>
-            <div className="w-px h-12 bg-border" />
+            <div className="w-px h-12 bg-foreground/20" />
             <div className="text-center">
-              <div className="text-3xl font-bold text-foreground">Peak</div>
+              <div className="text-3xl font-bold text-foreground font-display">Peak</div>
               <div className="text-sm text-muted-foreground">Freshness</div>
             </div>
-            <div className="w-px h-12 bg-border" />
+            <div className="w-px h-12 bg-foreground/20" />
             <div className="text-center">
-              <div className="text-3xl font-bold text-foreground">4.9★</div>
+              <div className="text-3xl font-bold text-foreground font-display">4.9★</div>
               <div className="text-sm text-muted-foreground">Customer Rating</div>
             </div>
           </div>

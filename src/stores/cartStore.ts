@@ -1,19 +1,12 @@
 import { create } from 'zustand';
-import { ShopifyProduct, createStorefrontCheckout } from '@/lib/shopify';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { Product } from '@/lib/products';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface CartItem {
-  product: ShopifyProduct;
-  variantId: string;
-  variantTitle: string;
-  price: {
-    amount: string;
-    currencyCode: string;
-  };
+  product: Product;
   quantity: number;
-  selectedOptions: Array<{
-    name: string;
-    value: string;
-  }>;
+  purchaseType: 'subscription' | 'one_time';
 }
 
 interface CartStore {
@@ -21,79 +14,102 @@ interface CartStore {
   checkoutUrl: string | null;
   isLoading: boolean;
   
-  addItem: (item: CartItem) => void;
-  updateQuantity: (variantId: string, quantity: number) => void;
-  removeItem: (variantId: string) => void;
+  addItem: (product: Product, quantity: number, purchaseType: 'subscription' | 'one_time') => void;
+  updateQuantity: (productId: string, quantity: number) => void;
+  removeItem: (productId: string) => void;
   clearCart: () => void;
   setCheckoutUrl: (url: string) => void;
   setLoading: (loading: boolean) => void;
   createCheckout: () => Promise<string | null>;
 }
 
-export const useCartStore = create<CartStore>((set, get) => ({
-  items: [],
-  checkoutUrl: null,
-  isLoading: false,
+export const useCartStore = create<CartStore>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      checkoutUrl: null,
+      isLoading: false,
 
-  addItem: (item) => {
-    const { items } = get();
-    const existingItem = items.find(i => i.variantId === item.variantId);
-    
-    if (existingItem) {
-      set({
-        items: items.map(i =>
-          i.variantId === item.variantId
-            ? { ...i, quantity: i.quantity + item.quantity }
-            : i
-        )
-      });
-    } else {
-      set({ items: [...items, item] });
+      addItem: (product, quantity, purchaseType) => {
+        const { items } = get();
+        const existingIndex = items.findIndex(
+          i => i.product.id === product.id && i.purchaseType === purchaseType
+        );
+        
+        if (existingIndex >= 0) {
+          const newItems = [...items];
+          newItems[existingIndex].quantity += quantity;
+          set({ items: newItems });
+        } else {
+          set({ items: [...items, { product, quantity, purchaseType }] });
+        }
+      },
+
+      updateQuantity: (productId, quantity) => {
+        if (quantity <= 0) {
+          get().removeItem(productId);
+          return;
+        }
+        
+        set({
+          items: get().items.map(item =>
+            item.product.id === productId ? { ...item, quantity } : item
+          )
+        });
+      },
+
+      removeItem: (productId) => {
+        set({
+          items: get().items.filter(item => item.product.id !== productId)
+        });
+      },
+
+      clearCart: () => {
+        set({ items: [], checkoutUrl: null });
+      },
+
+      setCheckoutUrl: (checkoutUrl) => set({ checkoutUrl }),
+      setLoading: (isLoading) => set({ isLoading }),
+
+      createCheckout: async () => {
+        const { items, setLoading, setCheckoutUrl, clearCart } = get();
+        if (items.length === 0) return null;
+
+        setLoading(true);
+        try {
+          const checkoutItems = items.map(item => ({
+            productId: item.product.id,
+            title: item.product.title,
+            quantity: item.quantity,
+            purchaseType: item.purchaseType,
+            priceId: item.purchaseType === 'subscription' 
+              ? item.product.stripe_subscription_price_id!
+              : item.product.stripe_one_time_price_id!,
+            price: item.purchaseType === 'subscription'
+              ? item.product.subscription_price
+              : item.product.one_time_price,
+          }));
+
+          const { data, error } = await supabase.functions.invoke('create-checkout', {
+            body: { items: checkoutItems },
+          });
+
+          if (error) throw error;
+          if (!data?.url) throw new Error('No checkout URL returned');
+
+          setCheckoutUrl(data.url);
+          return data.url;
+        } catch (error) {
+          console.error('Failed to create checkout:', error);
+          return null;
+        } finally {
+          setLoading(false);
+        }
+      }
+    }),
+    {
+      name: 'harvest-box-cart',
+      storage: createJSONStorage(() => localStorage),
     }
-  },
-
-  updateQuantity: (variantId, quantity) => {
-    if (quantity <= 0) {
-      get().removeItem(variantId);
-      return;
-    }
-    
-    set({
-      items: get().items.map(item =>
-        item.variantId === variantId ? { ...item, quantity } : item
-      )
-    });
-  },
-
-  removeItem: (variantId) => {
-    set({
-      items: get().items.filter(item => item.variantId !== variantId)
-    });
-  },
-
-  clearCart: () => {
-    set({ items: [], checkoutUrl: null });
-  },
-
-  setCheckoutUrl: (checkoutUrl) => set({ checkoutUrl }),
-  setLoading: (isLoading) => set({ isLoading }),
-
-  createCheckout: async () => {
-    const { items, setLoading, setCheckoutUrl } = get();
-    if (items.length === 0) return null;
-
-    setLoading(true);
-    try {
-      const checkoutUrl = await createStorefrontCheckout(
-        items.map(item => ({ variantId: item.variantId, quantity: item.quantity }))
-      );
-      setCheckoutUrl(checkoutUrl);
-      return checkoutUrl;
-    } catch (error) {
-      console.error('Failed to create checkout:', error);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }
-}));
+  )
+);

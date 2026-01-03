@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "./ProductCard";
-import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
+import { fetchProducts, Product } from "@/lib/products";
 import { Loader2, Package } from "lucide-react";
 
 export const ProductGrid = () => {
-  const [products, setProducts] = useState<ShopifyProduct[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const data = await fetchProducts(12);
+        const data = await fetchProducts();
         setProducts(data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -60,7 +60,7 @@ export const ProductGrid = () => {
         ) : (
           <div className="flex flex-wrap justify-center gap-8">
             {products.map((product) => (
-              <ProductCard key={product.node.id} product={product} />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

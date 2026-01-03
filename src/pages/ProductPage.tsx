@@ -197,9 +197,41 @@ const ProductPage = () => {
                 <span className="text-lg text-muted-foreground">/box</span>
               </div>
 
-              <p className="text-muted-foreground text-lg mb-8">
-                {product.description || "Fresh, seasonal fruits picked at peak ripeness and delivered straight to your door."}
-              </p>
+              <div className="text-muted-foreground text-lg mb-8 space-y-4">
+                {(() => {
+                  const desc = product.description || "Fresh, seasonal fruits picked at peak ripeness and delivered straight to your door.";
+                  // Split by bold markers like **The Vibe:**
+                  const parts = desc.split(/\*\*([^*]+)\*\*/g);
+                  
+                  if (parts.length <= 1) {
+                    return <p>{desc}</p>;
+                  }
+                  
+                  const elements: React.ReactNode[] = [];
+                  
+                  // First part is the intro paragraph
+                  if (parts[0]?.trim()) {
+                    elements.push(<p key="intro" className="text-foreground">{parts[0].trim()}</p>);
+                  }
+                  
+                  // Process remaining parts in pairs (label, content)
+                  for (let i = 1; i < parts.length; i += 2) {
+                    const label = parts[i]?.trim();
+                    const content = parts[i + 1]?.trim();
+                    
+                    if (label && content) {
+                      elements.push(
+                        <div key={label} className="flex gap-2">
+                          <span className="font-semibold text-foreground whitespace-nowrap">{label}</span>
+                          <span>{content}</span>
+                        </div>
+                      );
+                    }
+                  }
+                  
+                  return elements;
+                })()}
+              </div>
 
               {/* Variants */}
               {product.variants.edges.length > 1 && (

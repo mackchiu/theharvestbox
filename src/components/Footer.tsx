@@ -1,42 +1,42 @@
 import { Link } from "react-router-dom";
-import { Leaf, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export const Footer = () => {
   return (
-    <footer className="bg-foreground text-background py-16">
+    <footer className="bg-forest-dark text-cream py-16">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-accent-foreground" />
-              </div>
-              <span className="font-display text-xl font-bold">
-                The Harvest<span className="text-primary"> Box</span>
-              </span>
+            <Link to="/" className="inline-block mb-4">
+              <img 
+                src={logo} 
+                alt="The Harvest Box" 
+                className="h-16 w-auto brightness-110"
+              />
             </Link>
             
-            <p className="text-background/70 max-w-sm">
-              Bringing fresh, organic fruits from farm to your table. 
+            <p className="text-cream/70 max-w-sm leading-relaxed">
+              Bringing fresh fruits from farm to your table. 
               Subscribe today and taste the difference.
             </p>
           </div>
           
           <div>
-            <h4 className="font-display text-lg font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-display text-lg font-semibold mb-4 text-cream">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#boxes" className="text-background/70 hover:text-background transition-colors">
+                <a href="#boxes" className="text-cream/70 hover:text-cream transition-colors">
                   Our Boxes
                 </a>
               </li>
               <li>
-                <a href="#how-it-works" className="text-background/70 hover:text-background transition-colors">
+                <a href="#how-it-works" className="text-cream/70 hover:text-cream transition-colors">
                   How It Works
                 </a>
               </li>
               <li>
-                <a href="#" className="text-background/70 hover:text-background transition-colors">
+                <a href="#" className="text-cream/70 hover:text-cream transition-colors">
                   FAQs
                 </a>
               </li>
@@ -44,17 +44,17 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h4 className="font-display text-lg font-semibold mb-4">Contact Us</h4>
+            <h4 className="font-display text-lg font-semibold mb-4 text-cream">Contact Us</h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-background/70">
+              <li className="flex items-center gap-2 text-cream/70">
                 <Mail className="w-4 h-4" />
-                hello@freshbox.com
+                hello@theharvestbox.com
               </li>
-              <li className="flex items-center gap-2 text-background/70">
+              <li className="flex items-center gap-2 text-cream/70">
                 <Phone className="w-4 h-4" />
                 (555) 123-4567
               </li>
-              <li className="flex items-center gap-2 text-background/70">
+              <li className="flex items-center gap-2 text-cream/70">
                 <MapPin className="w-4 h-4" />
                 Sunny Valley Farm, CA
               </li>
@@ -62,8 +62,8 @@ export const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-background/20 pt-8 text-center text-background/60 text-sm">
-          <p>&copy; {new Date().getFullYear()} The Harvest Box. All rights reserved. Made with 💚 for healthy living.</p>
+        <div className="border-t border-cream/20 pt-8 text-center text-cream/60 text-sm">
+          <p>&copy; {new Date().getFullYear()} The Harvest Box. All rights reserved.</p>
         </div>
       </div>
     </footer>

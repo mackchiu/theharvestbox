@@ -57,18 +57,21 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        fruit: {
-          orange: "hsl(var(--fruit-orange))",
-          yellow: "hsl(var(--fruit-yellow))",
-          green: "hsl(var(--fruit-green))",
-          red: "hsl(var(--fruit-red))",
+        kraft: {
+          DEFAULT: "hsl(var(--kraft))",
+          dark: "hsl(var(--kraft-dark))",
         },
+        forest: {
+          DEFAULT: "hsl(var(--forest))",
+          dark: "hsl(var(--forest-dark))",
+        },
+        earth: "hsl(var(--earth))",
         cream: "hsl(var(--cream))",
-        leaf: "hsl(var(--leaf-dark))",
+        wood: "hsl(var(--wood))",
       },
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
-        body: ['Nunito', 'sans-serif'],
+        display: ['Crimson Pro', 'serif'],
+        body: ['Source Sans 3', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -10,7 +10,7 @@ export const Header = () => {
           <img 
             src={logo} 
             alt="The Harvest Box" 
-            className="h-12 w-auto transition-transform group-hover:scale-105"
+            className="h-24 w-auto transition-transform group-hover:scale-105"
           />
         </Link>
         

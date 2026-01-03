@@ -43,22 +43,6 @@ export const Hero = () => {
             </Button>
           </div>
           
-          <div className="mt-16 flex items-center justify-center gap-8 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-foreground font-display">5000+</div>
-              <div className="text-sm text-muted-foreground">Happy Subscribers</div>
-            </div>
-            <div className="w-px h-12 bg-foreground/20" />
-            <div className="text-center">
-              <div className="text-3xl font-bold text-foreground font-display">Peak</div>
-              <div className="text-sm text-muted-foreground">Freshness</div>
-            </div>
-            <div className="w-px h-12 bg-foreground/20" />
-            <div className="text-center">
-              <div className="text-3xl font-bold text-foreground font-display">4.9★</div>
-              <div className="text-sm text-muted-foreground">Customer Rating</div>
-            </div>
-          </div>
         </div>
       </div>
       

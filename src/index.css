@@ -16,8 +16,8 @@
     --popover: 40 30% 96%;
     --popover-foreground: 150 45% 18%;
 
-    /* Forest green - main brand color */
-    --primary: 150 45% 28%;
+    /* Forest green - main brand color (lighter) */
+    --primary: 145 40% 38%;
     --primary-foreground: 40 30% 96%;
 
     /* Kraft paper tan */
@@ -36,29 +36,29 @@
 
     --border: 35 30% 80%;
     --input: 35 30% 80%;
-    --ring: 150 45% 28%;
+    --ring: 145 40% 38%;
 
     --radius: 0.75rem;
 
     /* Custom rustic tokens */
     --kraft: 35 35% 75%;
     --kraft-dark: 35 30% 65%;
-    --forest: 150 45% 28%;
-    --forest-dark: 150 50% 18%;
+    --forest: 145 40% 38%;
+    --forest-dark: 145 45% 25%;
     --earth: 28 60% 45%;
     --cream: 40 30% 96%;
     --wood: 30 35% 35%;
 
     /* Gradients */
     --gradient-hero: linear-gradient(180deg, hsl(35 35% 75%) 0%, hsl(35 30% 82%) 100%);
-    --gradient-cta: linear-gradient(135deg, hsl(150 45% 28%) 0%, hsl(150 50% 22%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(150 45% 28%) 0%, hsl(150 50% 22%) 100%);
+    --gradient-cta: linear-gradient(135deg, hsl(145 40% 38%) 0%, hsl(145 45% 30%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(145 40% 38%) 0%, hsl(145 45% 30%) 100%);
     --gradient-kraft: linear-gradient(180deg, hsl(35 40% 78%) 0%, hsl(35 35% 72%) 100%);
 
     /* Shadows */
     --shadow-soft: 0 4px 20px -4px hsl(30 30% 30% / 0.15);
     --shadow-card: 0 8px 30px -8px hsl(30 30% 25% / 0.2);
-    --shadow-hover: 0 12px 40px -8px hsl(150 45% 28% / 0.25);
+    --shadow-hover: 0 12px 40px -8px hsl(145 40% 38% / 0.25);
     --shadow-inset: inset 0 2px 4px hsl(30 30% 30% / 0.1);
 
     /* Fonts */
@@ -67,12 +67,12 @@
 
     --sidebar-background: 40 30% 96%;
     --sidebar-foreground: 150 45% 18%;
-    --sidebar-primary: 150 45% 28%;
+    --sidebar-primary: 145 40% 38%;
     --sidebar-primary-foreground: 40 30% 96%;
     --sidebar-accent: 35 40% 90%;
     --sidebar-accent-foreground: 150 45% 18%;
     --sidebar-border: 35 30% 80%;
-    --sidebar-ring: 150 45% 28%;
+    --sidebar-ring: 145 40% 38%;
   }
 
   .dark {

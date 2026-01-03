@@ -16,7 +16,7 @@ export const Hero = () => {
             <img 
               src={logo} 
               alt="The Harvest Box" 
-              className="mx-auto w-96 md:w-[30rem] h-auto drop-shadow-lg"
+              className="mx-auto w-[48rem] md:w-[60rem] h-auto drop-shadow-lg"
             />
           </div>
           

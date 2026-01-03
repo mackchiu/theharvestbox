@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { fetchProductBySlug, Product } from "@/lib/products";
 import { useCartStore } from "@/stores/cartStore";
+import { formatPrice } from "@/lib/currency";
 import { ArrowLeft, Minus, Plus, Loader2, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import productBoxImage from "@/assets/product-box.png";
@@ -145,12 +146,12 @@ const ProductPage = () => {
               <div className="mb-6">
                 <div className="flex items-baseline gap-3">
                   <span className="text-4xl font-bold text-primary">
-                    ${displayPrice.toFixed(2)}
+                    {formatPrice(displayPrice)}
                   </span>
                   <span className="text-lg text-muted-foreground">/box</span>
                   {purchaseType === "subscription" && (
                     <span className="text-sm text-primary font-medium bg-primary/10 px-2 py-1 rounded">
-                      Save ${(product.one_time_price - product.subscription_price).toFixed(2)}
+                      Save {formatPrice(product.one_time_price - product.subscription_price)}
                     </span>
                   )}
                 </div>

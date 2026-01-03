@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/lib/products";
 import { useCartStore } from "@/stores/cartStore";
+import { formatPrice } from "@/lib/currency";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import productBoxImage from "@/assets/product-box.png";
@@ -50,7 +51,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <div className="flex items-center justify-between">
           <div>
             <span className="text-2xl font-bold text-primary">
-              ${product.subscription_price.toFixed(2)}
+              {formatPrice(product.subscription_price)}
             </span>
             <span className="text-sm text-muted-foreground">/week</span>
           </div>

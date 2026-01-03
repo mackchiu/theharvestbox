@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/sheet";
 import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { formatPrice } from "@/lib/currency";
 import productBoxImage from "@/assets/product-box.png";
 
 export const CartDrawer = () => {
@@ -98,7 +99,7 @@ export const CartDrawer = () => {
                             {item.purchaseType === 'subscription' ? 'Weekly subscription' : 'One-time purchase'}
                           </p>
                           <p className="font-bold text-primary mt-1">
-                            ${price.toFixed(2)}
+                            {formatPrice(price)}
                           </p>
                         </div>
                         
@@ -142,7 +143,7 @@ export const CartDrawer = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold">Total</span>
                   <span className="text-2xl font-bold text-primary">
-                    ${totalPrice.toFixed(2)}
+                    {formatPrice(totalPrice)}
                   </span>
                 </div>
                 

@@ -4,7 +4,7 @@ import { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { ShoppingCart, Plus } from "lucide-react";
 import { toast } from "sonner";
-
+import productBoxImage from "@/assets/product-box.png";
 interface ProductCardProps {
   product: ShopifyProduct;
 }
@@ -44,17 +44,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       className="group block bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1"
     >
       <div className="aspect-square overflow-hidden bg-secondary/30">
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={node.images.edges[0]?.node?.altText || node.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-6xl">
-            🍎
-          </div>
-        )}
+        <img
+          src={imageUrl || productBoxImage}
+          alt={node.images.edges[0]?.node?.altText || node.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
       </div>
       
       <div className="p-6">

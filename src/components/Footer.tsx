@@ -12,7 +12,7 @@ export const Footer = () => {
               <img 
                 src={logo} 
                 alt="The Harvest Box" 
-                className="h-16 w-auto brightness-110"
+                className="h-32 w-auto brightness-110"
               />
             </Link>
             

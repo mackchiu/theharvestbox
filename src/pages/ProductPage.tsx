@@ -7,6 +7,7 @@ import { fetchProductByHandle } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { ArrowLeft, Minus, Plus, Loader2, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
+import productBoxImage from "@/assets/product-box.png";
 
 interface ProductData {
   id: string;
@@ -152,17 +153,11 @@ const ProductPage = () => {
             {/* Images */}
             <div className="space-y-4">
               <div className="aspect-square rounded-3xl overflow-hidden bg-secondary/30">
-                {product.images.edges[selectedImage]?.node ? (
-                  <img
-                    src={product.images.edges[selectedImage].node.url}
-                    alt={product.images.edges[selectedImage].node.altText || product.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-8xl">
-                    🍎
-                  </div>
-                )}
+                <img
+                  src={product.images.edges[selectedImage]?.node?.url || productBoxImage}
+                  alt={product.images.edges[selectedImage]?.node?.altText || product.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               {product.images.edges.length > 1 && (

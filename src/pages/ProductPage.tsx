@@ -225,8 +225,15 @@ const ProductPage = () => {
               <div className="mb-6">
                 {(() => {
                   const basePrice = parseFloat(currentVariant?.price.amount || "0");
+                  
+                  // Fixed one-time prices
+                  const oneTimePrices: Record<string, number> = {
+                    "The Bushel": 69.99,
+                    "The Peck": 39.99,
+                  };
+                  
                   const displayPrice = purchaseType === "one-time" 
-                    ? basePrice * 1.15 
+                    ? oneTimePrices[product.title] || basePrice * 1.15 
                     : basePrice;
                   const currency = currentVariant?.price.currencyCode || "USD";
                   

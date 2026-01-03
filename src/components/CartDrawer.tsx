@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/sheet";
 import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import productBoxImage from "@/assets/product-box.png";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,12 @@ export const CartDrawer = () => {
   } = useCartStore();
   
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  const totalPrice = items.reduce((sum, item) => {
+    const price = item.purchaseType === 'subscription' 
+      ? item.product.subscription_price 
+      : item.product.one_time_price;
+    return sum + (price * item.quantity);
+  }, 0);
 
   const handleCheckout = async () => {
     try {
@@ -71,60 +77,64 @@ export const CartDrawer = () => {
             <>
               <div className="flex-1 overflow-y-auto pr-2 min-h-0">
                 <div className="space-y-4">
-                  {items.map((item) => (
-                    <div key={item.variantId} className="flex gap-4 p-4 bg-secondary/30 rounded-xl">
-                      <div className="w-20 h-20 bg-muted rounded-lg overflow-hidden flex-shrink-0">
-                        {item.product.node.images?.edges?.[0]?.node && (
+                  {items.map((item) => {
+                    const price = item.purchaseType === 'subscription' 
+                      ? item.product.subscription_price 
+                      : item.product.one_time_price;
+                    
+                    return (
+                      <div key={`${item.product.id}-${item.purchaseType}`} className="flex gap-4 p-4 bg-secondary/30 rounded-xl">
+                        <div className="w-20 h-20 bg-muted rounded-lg overflow-hidden flex-shrink-0">
                           <img
-                            src={item.product.node.images.edges[0].node.url}
-                            alt={item.product.node.title}
+                            src={item.product.image_url || productBoxImage}
+                            alt={item.product.title}
                             className="w-full h-full object-cover"
                           />
-                        )}
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold truncate">{item.product.node.title}</h4>
-                        {item.variantTitle !== 'Default Title' && (
-                          <p className="text-sm text-muted-foreground">{item.variantTitle}</p>
-                        )}
-                        <p className="font-bold text-primary mt-1">
-                          {item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)}
-                        </p>
-                      </div>
-                      
-                      <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                          onClick={() => removeItem(item.variantId)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        </div>
                         
-                        <div className="flex items-center gap-1 bg-background rounded-lg p-1">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold truncate">{item.product.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {item.purchaseType === 'subscription' ? 'Weekly subscription' : 'One-time purchase'}
+                          </p>
+                          <p className="font-bold text-primary mt-1">
+                            ${price.toFixed(2)}
+                          </p>
+                        </div>
+                        
+                        <div className="flex flex-col items-end gap-2 flex-shrink-0">
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7"
-                            onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
+                            className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                            onClick={() => removeItem(item.product.id)}
                           >
-                            <Minus className="h-3 w-3" />
+                            <Trash2 className="h-4 w-4" />
                           </Button>
-                          <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7"
-                            onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                          >
-                            <Plus className="h-3 w-3" />
-                          </Button>
+                          
+                          <div className="flex items-center gap-1 bg-background rounded-lg p-1">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7"
+                              onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                            >
+                              <Minus className="h-3 w-3" />
+                            </Button>
+                            <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7"
+                              onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                            >
+                              <Plus className="h-3 w-3" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               
@@ -132,7 +142,7 @@ export const CartDrawer = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold">Total</span>
                   <span className="text-2xl font-bold text-primary">
-                    {items[0]?.price.currencyCode || 'USD'} {totalPrice.toFixed(2)}
+                    ${totalPrice.toFixed(2)}
                   </span>
                 </div>
                 

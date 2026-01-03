@@ -3,62 +3,18 @@ import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { fetchProductByHandle } from "@/lib/shopify";
+import { fetchProductBySlug, Product } from "@/lib/products";
 import { useCartStore } from "@/stores/cartStore";
 import { ArrowLeft, Minus, Plus, Loader2, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import productBoxImage from "@/assets/product-box.png";
 
-interface ProductData {
-  id: string;
-  title: string;
-  description: string;
-  handle: string;
-  priceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-  images: {
-    edges: Array<{
-      node: {
-        url: string;
-        altText: string | null;
-      };
-    }>;
-  };
-  variants: {
-    edges: Array<{
-      node: {
-        id: string;
-        title: string;
-        price: {
-          amount: string;
-          currencyCode: string;
-        };
-        availableForSale: boolean;
-        selectedOptions: Array<{
-          name: string;
-          value: string;
-        }>;
-      };
-    }>;
-  };
-  options: Array<{
-    name: string;
-    values: string[];
-  }>;
-}
-
 const ProductPage = () => {
   const { handle } = useParams<{ handle: string }>();
-  const [product, setProduct] = useState<ProductData | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedVariant, setSelectedVariant] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [purchaseType, setPurchaseType] = useState<"subscription" | "one-time">("subscription");
+  const [purchaseType, setPurchaseType] = useState<"subscription" | "one_time">("subscription");
   
   const addItem = useCartStore((state) => state.addItem);
 
@@ -66,11 +22,8 @@ const ProductPage = () => {
     const loadProduct = async () => {
       if (!handle) return;
       try {
-        const data = await fetchProductByHandle(handle);
+        const data = await fetchProductBySlug(handle);
         setProduct(data);
-        if (data?.variants?.edges?.[0]) {
-          setSelectedVariant(data.variants.edges[0].node.id);
-        }
       } catch (error) {
         console.error("Failed to fetch product:", error);
       } finally {
@@ -82,24 +35,9 @@ const ProductPage = () => {
   }, [handle]);
 
   const handleAddToCart = () => {
-    if (!product || !selectedVariant) return;
+    if (!product) return;
 
-    const variant = product.variants.edges.find(
-      (v) => v.node.id === selectedVariant
-    )?.node;
-
-    if (!variant) return;
-
-    addItem({
-      product: {
-        node: product,
-      },
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity,
-      selectedOptions: variant.selectedOptions,
-    });
+    addItem(product, quantity, purchaseType);
 
     toast.success("Added to cart!", {
       description: `${quantity}x ${product.title}`,
@@ -133,9 +71,9 @@ const ProductPage = () => {
     );
   }
 
-  const currentVariant = product.variants.edges.find(
-    (v) => v.node.id === selectedVariant
-  )?.node;
+  const displayPrice = purchaseType === "subscription" 
+    ? product.subscription_price 
+    : product.one_time_price;
 
   return (
     <div className="min-h-screen">
@@ -151,37 +89,13 @@ const ProductPage = () => {
           </Link>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Images */}
-            <div className="space-y-4">
-              <div className="aspect-square rounded-3xl overflow-hidden bg-secondary/30">
-                <img
-                  src={product.images.edges[selectedImage]?.node?.url || productBoxImage}
-                  alt={product.images.edges[selectedImage]?.node?.altText || product.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {product.images.edges.length > 1 && (
-                <div className="flex gap-3">
-                  {product.images.edges.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImage(index)}
-                      className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
-                        selectedImage === index
-                          ? "border-primary"
-                          : "border-transparent opacity-70 hover:opacity-100"
-                      }`}
-                    >
-                      <img
-                        src={image.node.url}
-                        alt={image.node.altText || `${product.title} ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
+            {/* Image */}
+            <div className="aspect-square rounded-3xl overflow-hidden bg-secondary/30">
+              <img
+                src={product.image_url || productBoxImage}
+                alt={product.title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             {/* Details */}
@@ -189,6 +103,12 @@ const ProductPage = () => {
               <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
                 {product.title}
               </h1>
+
+              {product.serves && (
+                <p className="text-muted-foreground mb-4">
+                  Perfect for {product.serves}
+                </p>
+              )}
 
               {/* Purchase Type Toggle */}
               <div className="mb-6">
@@ -208,9 +128,9 @@ const ProductPage = () => {
                     <div className="text-sm text-muted-foreground">Best value • Weekly delivery</div>
                   </button>
                   <button
-                    onClick={() => setPurchaseType("one-time")}
+                    onClick={() => setPurchaseType("one_time")}
                     className={`flex-1 px-4 py-3 rounded-lg border-2 transition-all text-left ${
-                      purchaseType === "one-time"
+                      purchaseType === "one_time"
                         ? "border-primary bg-primary/10"
                         : "border-border hover:border-primary/50"
                     }`}
@@ -223,40 +143,23 @@ const ProductPage = () => {
 
               {/* Price Display */}
               <div className="mb-6">
-                {(() => {
-                  const basePrice = parseFloat(currentVariant?.price.amount || "0");
-                  
-                  // Fixed one-time prices
-                  const oneTimePrices: Record<string, number> = {
-                    "The Bushel": 69.99,
-                    "The Peck": 39.99,
-                  };
-                  
-                  const displayPrice = purchaseType === "one-time" 
-                    ? oneTimePrices[product.title] || basePrice * 1.15 
-                    : basePrice;
-                  const currency = currentVariant?.price.currencyCode || "USD";
-                  
-                  return (
-                    <div className="flex items-baseline gap-3">
-                      <span className="text-4xl font-bold text-primary">
-                        {currency} {displayPrice.toFixed(2)}
-                      </span>
-                      <span className="text-lg text-muted-foreground">/box</span>
-                      {purchaseType === "subscription" && (
-                        <span className="text-sm text-primary font-medium bg-primary/10 px-2 py-1 rounded">
-                          Save 15%
-                        </span>
-                      )}
-                    </div>
-                  );
-                })()}
+                <div className="flex items-baseline gap-3">
+                  <span className="text-4xl font-bold text-primary">
+                    ${displayPrice.toFixed(2)}
+                  </span>
+                  <span className="text-lg text-muted-foreground">/box</span>
+                  {purchaseType === "subscription" && (
+                    <span className="text-sm text-primary font-medium bg-primary/10 px-2 py-1 rounded">
+                      Save ${(product.one_time_price - product.subscription_price).toFixed(2)}
+                    </span>
+                  )}
+                </div>
               </div>
 
+              {/* Description */}
               <div className="text-muted-foreground text-lg mb-8 space-y-4">
                 {(() => {
                   const desc = product.description || "Fresh, seasonal fruits picked at peak ripeness and delivered straight to your door.";
-                  // Split by bold markers like **The Vibe:**
                   const parts = desc.split(/\*\*([^*]+)\*\*/g);
                   
                   if (parts.length <= 1) {
@@ -265,21 +168,15 @@ const ProductPage = () => {
                   
                   const elements: React.ReactNode[] = [];
                   
-                  // First part is the intro paragraph
-                  if (parts[0]?.trim()) {
-                    elements.push(<p key="intro" className="text-foreground">{parts[0].trim()}</p>);
-                  }
-                  
-                  // Process remaining parts in pairs (label, content)
                   for (let i = 1; i < parts.length; i += 2) {
                     const label = parts[i]?.trim();
                     const content = parts[i + 1]?.trim();
                     
                     if (label && content) {
                       elements.push(
-                        <div key={label} className="flex gap-2">
-                          <span className="font-semibold text-foreground whitespace-nowrap">{label}</span>
-                          <span>{content}</span>
+                        <div key={label} className="mb-4">
+                          <h3 className="font-semibold text-foreground mb-1">{label}</h3>
+                          <p className="whitespace-pre-line">{content}</p>
                         </div>
                       );
                     }
@@ -288,35 +185,6 @@ const ProductPage = () => {
                   return elements;
                 })()}
               </div>
-
-              {/* Variants */}
-              {product.variants.edges.length > 1 && (
-                <div className="mb-8">
-                  <label className="block text-sm font-semibold mb-3">
-                    Select Option
-                  </label>
-                  <div className="flex flex-wrap gap-3">
-                    {product.variants.edges.map((variant) => (
-                      <button
-                        key={variant.node.id}
-                        onClick={() => setSelectedVariant(variant.node.id)}
-                        disabled={!variant.node.availableForSale}
-                        className={`px-4 py-2 rounded-lg border-2 transition-all ${
-                          selectedVariant === variant.node.id
-                            ? "border-primary bg-primary/10"
-                            : "border-border hover:border-primary/50"
-                        } ${
-                          !variant.node.availableForSale
-                            ? "opacity-50 cursor-not-allowed"
-                            : ""
-                        }`}
-                      >
-                        {variant.node.title}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Quantity */}
               <div className="mb-8">
@@ -351,13 +219,13 @@ const ProductPage = () => {
                 size="xl"
                 className="w-full"
                 onClick={handleAddToCart}
-                disabled={!currentVariant?.availableForSale}
+                disabled={!product.available}
               >
                 <ShoppingCart className="w-5 h-5" />
                 Add to Cart
               </Button>
 
-              {!currentVariant?.availableForSale && (
+              {!product.available && (
                 <p className="text-destructive text-sm mt-3 text-center">
                   This product is currently out of stock
                 </p>

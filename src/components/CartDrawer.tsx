@@ -19,7 +19,8 @@ export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { 
     items, 
-    isLoading, 
+    isLoading,
+    lastError,
     updateQuantity, 
     removeItem, 
     createCheckout 
@@ -34,18 +35,17 @@ export const CartDrawer = () => {
   }, 0);
 
   const handleCheckout = async () => {
-    console.log('handleCheckout called, items:', items);
     try {
       const checkoutUrl = await createCheckout();
-      console.log('Checkout URL received:', checkoutUrl);
       if (checkoutUrl) {
         window.location.href = checkoutUrl;
       } else {
-        toast.error('Failed to create checkout. Please try again.');
+        toast.error(lastError || 'Failed to create checkout. Please try again.');
       }
     } catch (error) {
-      console.error('Checkout failed:', error);
-      toast.error('Checkout failed. Please try again.');
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Checkout failed:', message);
+      toast.error(message || 'Checkout failed. Please try again.');
     }
   };
 
@@ -66,7 +66,7 @@ export const CartDrawer = () => {
         <SheetHeader className="flex-shrink-0">
           <SheetTitle className="font-display text-2xl">Your Cart</SheetTitle>
           <SheetDescription>
-            {totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`}
+            {lastError ? `Checkout error: ${lastError}` : (totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`)}
           </SheetDescription>
         </SheetHeader>
         

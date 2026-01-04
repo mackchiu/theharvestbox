@@ -33,19 +33,28 @@ serve(async (req) => {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        logStep("Checkout session completed", { sessionId: session.id });
+        logStep("Checkout session completed", { sessionId: session.id, mode: session.mode });
 
         const userId = session.metadata?.user_id;
         const itemsData = session.metadata?.items;
+        
+        // Extract shipping address from session
+        const shippingDetails = session.shipping_details;
+        const shippingAddress = shippingDetails ? {
+          name: shippingDetails.name,
+          address: shippingDetails.address,
+        } : null;
 
-        if (userId && itemsData) {
+        logStep("Session details", { userId, hasItems: !!itemsData, hasShipping: !!shippingAddress });
+
+        if (itemsData) {
           const items = JSON.parse(itemsData);
           
-          // Create order
+          // Create order (works for both guest and authenticated users)
           const { data: order, error: orderError } = await supabaseAdmin
             .from("orders")
             .insert({
-              user_id: userId,
+              user_id: userId || null,
               stripe_session_id: session.id,
               stripe_payment_intent_id: session.payment_intent as string || null,
               status: "paid",
@@ -53,6 +62,7 @@ serve(async (req) => {
               items: items,
               subtotal: (session.amount_subtotal || 0) / 100,
               total: (session.amount_total || 0) / 100,
+              shipping_address: shippingAddress,
             })
             .select()
             .single();
@@ -63,13 +73,13 @@ serve(async (req) => {
             logStep("Order created", { orderId: order.id });
           }
 
-          // If subscription, create subscription record
-          if (session.mode === "subscription" && session.subscription) {
+          // If subscription and user is logged in, create subscription record
+          if (session.mode === "subscription" && session.subscription && userId) {
             const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
             
             for (const item of items) {
               if (item.purchaseType === "subscription") {
-                await supabaseAdmin
+                const { error: subError } = await supabaseAdmin
                   .from("subscriptions")
                   .insert({
                     user_id: userId,
@@ -79,18 +89,35 @@ serve(async (req) => {
                     current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
                     current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
                   });
+                
+                if (subError) {
+                  logStep("Error creating subscription", { error: subError });
+                } else {
+                  logStep("Subscription record created", { productId: item.productId });
+                }
               }
             }
-            logStep("Subscription record created");
           }
 
-          // Update profile with Stripe customer ID
-          if (session.customer) {
+          // Update profile with Stripe customer ID and shipping address
+          if (userId && session.customer) {
+            const updateData: Record<string, unknown> = { 
+              stripe_customer_id: session.customer as string 
+            };
+            
+            if (shippingAddress) {
+              updateData.shipping_address = shippingAddress;
+            }
+            
             await supabaseAdmin
               .from("profiles")
-              .update({ stripe_customer_id: session.customer as string })
+              .update(updateData)
               .eq("id", userId);
+              
+            logStep("Profile updated with customer ID and shipping");
           }
+        } else {
+          logStep("No items in metadata, skipping order creation");
         }
         break;
       }

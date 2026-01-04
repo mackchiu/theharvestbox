@@ -85,6 +85,10 @@ serve(async (req) => {
       mode,
       success_url: `${req.headers.get("origin")}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get("origin")}/`,
+      // Collect shipping address (Canada only)
+      shipping_address_collection: {
+        allowed_countries: ['CA'],
+      },
       metadata: {
         user_id: user?.id || "",
         items: JSON.stringify(items.map(i => ({ productId: i.productId, quantity: i.quantity, purchaseType: i.purchaseType }))),

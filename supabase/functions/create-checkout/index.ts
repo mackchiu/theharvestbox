@@ -41,18 +41,22 @@ serve(async (req) => {
     if (!items || items.length === 0) throw new Error("No items provided");
     logStep("Items received", { count: items.length });
 
-    // Check if user is authenticated (optional for guest checkout)
+    // Require authentication - no guest checkout
     const authHeader = req.headers.get("Authorization");
-    let user = null;
-    let userEmail = null;
-
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      user = data.user;
-      userEmail = user?.email;
-      logStep("User authenticated", { userId: user?.id, email: userEmail });
+    if (!authHeader) {
+      throw new Error("Authentication required. Please log in to checkout.");
     }
+
+    const token = authHeader.replace("Bearer ", "");
+    const { data, error: authError } = await supabaseClient.auth.getUser(token);
+    
+    if (authError || !data.user) {
+      throw new Error("Invalid authentication. Please log in again.");
+    }
+    
+    const user = data.user;
+    const userEmail = user.email;
+    logStep("User authenticated", { userId: user.id, email: userEmail });
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
 

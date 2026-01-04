@@ -34,8 +34,10 @@ export const CartDrawer = () => {
   }, 0);
 
   const handleCheckout = async () => {
+    console.log('handleCheckout called, items:', items);
     try {
       const checkoutUrl = await createCheckout();
+      console.log('Checkout URL received:', checkoutUrl);
       if (checkoutUrl) {
         window.location.href = checkoutUrl;
       } else {

@@ -82,14 +82,15 @@ serve(async (req) => {
     }));
 
     // Create checkout session
+    const origin = req.headers.get("origin") || "";
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : userEmail || undefined,
       client_reference_id: user.id,
       line_items: lineItems,
       mode,
-      success_url: `${req.headers.get("origin")}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get("origin")}/`,
+      success_url: `${origin}/#/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/#/`,
       // Collect shipping address (Canada only)
       shipping_address_collection: {
         allowed_countries: ["CA"],

@@ -9,7 +9,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { useCartStore } from "@/stores/cartStore";
 import { formatPrice } from "@/lib/currency";
 import productBoxImage from "@/assets/product-box.png";
@@ -36,11 +37,13 @@ export const CartDrawer = () => {
     try {
       const checkoutUrl = await createCheckout();
       if (checkoutUrl) {
-        window.open(checkoutUrl, '_blank');
-        setIsOpen(false);
+        window.location.href = checkoutUrl;
+      } else {
+        toast.error('Failed to create checkout. Please try again.');
       }
     } catch (error) {
       console.error('Checkout failed:', error);
+      toast.error('Checkout failed. Please try again.');
     }
   };
 
@@ -161,7 +164,7 @@ export const CartDrawer = () => {
                     </>
                   ) : (
                     <>
-                      <ExternalLink className="w-5 h-5" />
+                      <ShoppingCart className="w-5 h-5" />
                       Checkout
                     </>
                   )}

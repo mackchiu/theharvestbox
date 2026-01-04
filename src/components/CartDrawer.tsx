@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -12,11 +13,14 @@ import {
 import { ShoppingCart, Minus, Plus, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useCartStore } from "@/stores/cartStore";
+import { useAuth } from "@/hooks/useAuth";
 import { formatPrice } from "@/lib/currency";
 import productBoxImage from "@/assets/product-box.png";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { 
     items, 
     isLoading,
@@ -35,6 +39,14 @@ export const CartDrawer = () => {
   }, 0);
 
   const handleCheckout = async () => {
+    // Require login before checkout
+    if (!user) {
+      toast.info('Please log in to complete your purchase');
+      setIsOpen(false);
+      navigate('/auth');
+      return;
+    }
+
     try {
       const checkoutUrl = await createCheckout();
       if (checkoutUrl) {

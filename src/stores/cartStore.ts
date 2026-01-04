@@ -72,7 +72,7 @@ export const useCartStore = create<CartStore>()(
       setLoading: (isLoading) => set({ isLoading }),
 
       createCheckout: async () => {
-        const { items, setLoading, setCheckoutUrl, clearCart } = get();
+        const { items, setLoading, setCheckoutUrl } = get();
         if (items.length === 0) return null;
 
         setLoading(true);
@@ -90,18 +90,29 @@ export const useCartStore = create<CartStore>()(
               : item.product.one_time_price,
           }));
 
+          console.log('Creating checkout with items:', checkoutItems);
+
           const { data, error } = await supabase.functions.invoke('create-checkout', {
             body: { items: checkoutItems },
           });
 
-          if (error) throw error;
-          if (!data?.url) throw new Error('No checkout URL returned');
+          console.log('Checkout response:', { data, error });
+
+          if (error) {
+            console.error('Supabase function error:', error);
+            throw new Error(error.message || 'Failed to create checkout');
+          }
+          
+          if (!data?.url) {
+            console.error('No checkout URL in response:', data);
+            throw new Error('No checkout URL returned');
+          }
 
           setCheckoutUrl(data.url);
           return data.url;
         } catch (error) {
           console.error('Failed to create checkout:', error);
-          return null;
+          throw error;
         } finally {
           setLoading(false);
         }

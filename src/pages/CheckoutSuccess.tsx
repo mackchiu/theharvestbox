@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,19 @@ import { toast } from "sonner";
 import { CheckCircle, Loader2 } from "lucide-react";
 
 const CheckoutSuccess = () => {
-  const [params] = useSearchParams();
-  const sessionId = useMemo(() => params.get("session_id"), [params]);
+  // With HashRouter, Stripe redirects to /#/checkout-success?session_id=...
+  // But the query param ends up in the hash, so we need to parse it manually
+  const sessionId = useMemo(() => {
+    // First try the hash portion (where Stripe puts it with HashRouter)
+    const hashSearch = window.location.hash.split("?")[1];
+    if (hashSearch) {
+      const hashParams = new URLSearchParams(hashSearch);
+      if (hashParams.get("session_id")) return hashParams.get("session_id");
+    }
+    // Fallback to regular search params
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get("session_id");
+  }, []);
   const clearCart = useCartStore((s) => s.clearCart);
   const [syncing, setSyncing] = useState(true);
 

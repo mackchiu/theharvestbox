@@ -11,12 +11,12 @@ const ComingSoonPage = () => {
 
         <div className="container mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-4 py-16">
           <div className="mx-auto max-w-4xl rounded-[2rem] border border-kraft-dark/30 bg-background/90 p-8 shadow-card backdrop-blur md:p-12">
-            <div className="mb-8 flex justify-center">
-              <img src={logo} alt="The Harvest Box" className="h-40 w-auto md:h-52" />
+            <div className="mb-10 flex justify-center">
+              <img src={logo} alt="The Harvest Box" className="h-52 w-auto md:h-64 lg:h-72" />
             </div>
 
             <div className="mx-auto max-w-3xl text-center">
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+              <p className="mb-5 text-lg font-bold uppercase tracking-[0.3em] text-primary md:text-xl">
                 Coming Soon
               </p>
 

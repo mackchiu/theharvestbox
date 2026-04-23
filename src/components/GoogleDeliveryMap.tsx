@@ -10,8 +10,7 @@ declare global {
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const polygonPath = [
-  // Finch Ave W, west to east
+const fallbackPolygonPath = [
   { lat: 43.7735, lng: -79.5205 },
   { lat: 43.7737, lng: -79.5075 },
   { lat: 43.7738, lng: -79.4925 },
@@ -24,8 +23,6 @@ const polygonPath = [
   { lat: 43.7754, lng: -79.3740 },
   { lat: 43.7755, lng: -79.3590 },
   { lat: 43.7756, lng: -79.3475 },
-
-  // 404 / DVP, north to south
   { lat: 43.7700, lng: -79.3455 },
   { lat: 43.7600, lng: -79.3430 },
   { lat: 43.7480, lng: -79.3415 },
@@ -36,8 +33,6 @@ const polygonPath = [
   { lat: 43.6890, lng: -79.3470 },
   { lat: 43.6800, lng: -79.3525 },
   { lat: 43.6725, lng: -79.3605 },
-
-  // St. Clair Ave W, east to west
   { lat: 43.6715, lng: -79.3720 },
   { lat: 43.6710, lng: -79.3880 },
   { lat: 43.6708, lng: -79.4040 },
@@ -47,8 +42,6 @@ const polygonPath = [
   { lat: 43.6718, lng: -79.4680 },
   { lat: 43.6725, lng: -79.4830 },
   { lat: 43.6732, lng: -79.4945 },
-
-  // Black Creek / Hwy 400 corridor, south to north
   { lat: 43.6810, lng: -79.4955 },
   { lat: 43.6940, lng: -79.4965 },
   { lat: 43.7070, lng: -79.4975 },
@@ -58,6 +51,41 @@ const polygonPath = [
   { lat: 43.7580, lng: -79.5115 },
   { lat: 43.7670, lng: -79.5165 },
   { lat: 43.7735, lng: -79.5205 },
+];
+
+const boundarySegments = [
+  {
+    origin: { lat: 43.7737, lng: -79.5204 },
+    destination: { lat: 43.7756, lng: -79.3475 },
+    waypoints: [
+      { location: { lat: 43.7739, lng: -79.4700 } },
+      { location: { lat: 43.7747, lng: -79.4100 } },
+    ],
+  },
+  {
+    origin: { lat: 43.7756, lng: -79.3475 },
+    destination: { lat: 43.6718, lng: -79.3592 },
+    waypoints: [
+      { location: { lat: 43.7370, lng: -79.3415 } },
+      { location: { lat: 43.7030, lng: -79.3445 } },
+    ],
+  },
+  {
+    origin: { lat: 43.6718, lng: -79.3592 },
+    destination: { lat: 43.6729, lng: -79.4948 },
+    waypoints: [
+      { location: { lat: 43.6710, lng: -79.4100 } },
+      { location: { lat: 43.6716, lng: -79.4550 } },
+    ],
+  },
+  {
+    origin: { lat: 43.6729, lng: -79.4948 },
+    destination: { lat: 43.7737, lng: -79.5204 },
+    waypoints: [
+      { location: { lat: 43.7140, lng: -79.5000 } },
+      { location: { lat: 43.7520, lng: -79.5090 } },
+    ],
+  },
 ];
 
 const center = { lat: 43.725, lng: -79.415 };
@@ -80,6 +108,46 @@ function loadGoogleMaps() {
   });
 
   return mapsScriptPromise;
+}
+
+async function buildRoadBoundaryPath(google: any) {
+  const directionsService = new google.maps.DirectionsService();
+
+  const segmentPaths = await Promise.all(
+    boundarySegments.map(
+      (segment) =>
+        new Promise<any[]>((resolve, reject) => {
+          directionsService.route(
+            {
+              origin: segment.origin,
+              destination: segment.destination,
+              waypoints: segment.waypoints,
+              optimizeWaypoints: false,
+              provideRouteAlternatives: false,
+              travelMode: google.maps.TravelMode.DRIVING,
+              avoidTolls: true,
+            },
+            (result: any, status: string) => {
+              if (status !== "OK" || !result?.routes?.[0]?.overview_path) {
+                reject(new Error(`Directions failed: ${status}`));
+                return;
+              }
+
+              resolve(
+                result.routes[0].overview_path.map((point: any) => ({
+                  lat: point.lat(),
+                  lng: point.lng(),
+                })),
+              );
+            },
+          );
+        }),
+    ),
+  );
+
+  return segmentPaths.flatMap((segment, index) =>
+    index === 0 ? segment : segment.slice(1),
+  );
 }
 
 export const GoogleDeliveryMap = () => {
@@ -105,7 +173,7 @@ export const GoogleDeliveryMap = () => {
     let mounted = true;
 
     loadGoogleMaps()
-      .then((google) => {
+      .then(async (google) => {
         if (!mounted || !mapRef.current || !inputRef.current) return;
 
         const map = new google.maps.Map(mapRef.current, {
@@ -119,8 +187,17 @@ export const GoogleDeliveryMap = () => {
 
         mapInstanceRef.current = map;
 
+        let resolvedPath = fallbackPolygonPath;
+        try {
+          resolvedPath = await buildRoadBoundaryPath(google);
+        } catch {
+          resolvedPath = fallbackPolygonPath;
+        }
+
+        if (!mounted) return;
+
         polygonRef.current = new google.maps.Polygon({
-          paths: polygonPath,
+          paths: resolvedPath,
           strokeColor: "#4E8A67",
           strokeOpacity: 0.95,
           strokeWeight: 3,

@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { GoogleDeliveryMap } from "@/components/GoogleDeliveryMap";
 
 const DeliveryAreaPage = () => {
   return (
@@ -15,14 +16,10 @@ const DeliveryAreaPage = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.9fr] gap-8 items-start">
-            <div className="bg-card rounded-2xl shadow-soft border border-border/50 p-4">
-              <img
-                src="/delivery-area-map.svg"
-                alt="Schematic map of Harvest Box delivery area boundaries"
-                className="w-full h-auto rounded-xl"
-              />
+            <div>
+              <GoogleDeliveryMap />
               <p className="text-sm text-muted-foreground mt-4 px-2">
-                Schematic delivery area map, shown for orientation. Customer-facing service is defined by the listed boundaries, not drive-time estimates.
+                Boundary checks are intended as a customer guide. If you&apos;re close to the edge of the zone, contact us to confirm before ordering.
               </p>
             </div>
 

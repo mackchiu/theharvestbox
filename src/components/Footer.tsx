@@ -25,19 +25,24 @@ export const Footer = () => {
             <h4 className="font-display text-lg font-semibold mb-4 text-cream">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#boxes" className="text-cream/70 hover:text-cream transition-colors">
+                <a href="/#boxes" className="text-cream/70 hover:text-cream transition-colors">
                   Our Boxes
                 </a>
               </li>
               <li>
-                <a href="#how-it-works" className="text-cream/70 hover:text-cream transition-colors">
+                <a href="/#how-it-works" className="text-cream/70 hover:text-cream transition-colors">
                   How It Works
                 </a>
               </li>
               <li>
-                <a href="#" className="text-cream/70 hover:text-cream transition-colors">
+                <Link to="/delivery-area" className="text-cream/70 hover:text-cream transition-colors">
+                  Delivery Area
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="text-cream/70 hover:text-cream transition-colors">
                   FAQ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

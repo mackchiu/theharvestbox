@@ -24,6 +24,12 @@ export const Header = () => {
           <a href="/#how-it-works" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
             How It Works
           </a>
+          <Link to="/delivery-area" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
+            Delivery Area
+          </Link>
+          <Link to="/faq" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
+            FAQ
+          </Link>
         </nav>
         
         <Button variant="outline" size="sm" asChild>

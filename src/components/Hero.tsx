@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { HomeSectionLink } from "@/components/HomeSectionLink";
 import logo from "@/assets/logo.png";
 
 export const Hero = () => {
@@ -31,15 +32,15 @@ export const Hero = () => {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <Button variant="hero" size="xl" asChild>
-              <a href="#boxes">
+              <HomeSectionLink section="boxes">
                 Join Harvest Box
                 <ArrowRight className="w-5 h-5" />
-              </a>
+              </HomeSectionLink>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-foreground/30 text-foreground hover:bg-foreground/10">
-              <a href="#how-it-works">
+              <HomeSectionLink section="how-it-works">
                 How It Works
-              </a>
+              </HomeSectionLink>
             </Button>
           </div>
           

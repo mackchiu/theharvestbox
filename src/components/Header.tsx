@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import { HomeSectionLink } from "./HomeSectionLink";
 import logo from "@/assets/logo.png";
 
 export const Header = () => {
@@ -18,12 +19,12 @@ export const Header = () => {
           <Link to="/" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
             Home
           </Link>
-          <a href="/#boxes" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
+          <HomeSectionLink section="boxes" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
             Our Boxes
-          </a>
-          <a href="/#how-it-works" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
+          </HomeSectionLink>
+          <HomeSectionLink section="how-it-works" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
             How It Works
-          </a>
+          </HomeSectionLink>
           <Link to="/delivery-area" className="text-foreground/70 hover:text-foreground transition-colors font-medium">
             Delivery Area
           </Link>
@@ -33,7 +34,7 @@ export const Header = () => {
         </nav>
         
         <Button variant="outline" size="sm" asChild>
-          <a href="#boxes">See Boxes</a>
+          <HomeSectionLink section="boxes">See Boxes</HomeSectionLink>
         </Button>
       </div>
     </header>

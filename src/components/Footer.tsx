@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, MapPin } from "lucide-react";
+import { HomeSectionLink } from "./HomeSectionLink";
 import logo from "@/assets/logo.png";
 
 export const Footer = () => {
@@ -25,14 +26,14 @@ export const Footer = () => {
             <h4 className="font-display text-lg font-semibold mb-4 text-cream">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <a href="/#boxes" className="text-cream/70 hover:text-cream transition-colors">
+                <HomeSectionLink section="boxes" className="text-cream/70 hover:text-cream transition-colors">
                   Our Boxes
-                </a>
+                </HomeSectionLink>
               </li>
               <li>
-                <a href="/#how-it-works" className="text-cream/70 hover:text-cream transition-colors">
+                <HomeSectionLink section="how-it-works" className="text-cream/70 hover:text-cream transition-colors">
                   How It Works
-                </a>
+                </HomeSectionLink>
               </li>
               <li>
                 <Link to="/delivery-area" className="text-cream/70 hover:text-cream transition-colors">

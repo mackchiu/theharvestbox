@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { HomeSectionLink } from "@/components/HomeSectionLink";
 
 export const CTA = () => {
   return (
@@ -19,10 +20,10 @@ export const CTA = () => {
           </p>
           
           <Button variant="hero" size="xl" asChild>
-            <a href="#boxes">
+            <HomeSectionLink section="boxes">
               See This Week&apos;s Box
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </HomeSectionLink>
           </Button>
           
           <p className="text-sm text-muted-foreground mt-6">

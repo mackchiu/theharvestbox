@@ -1,61 +1,15 @@
-import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { fetchProductBySlug, Product } from "@/lib/products";
-import { useCartStore } from "@/stores/cartStore";
+import { getBoxBySlug } from "@/lib/boxes";
 import { formatPrice } from "@/lib/currency";
-import { ArrowLeft, Minus, Plus, Loader2, ShoppingCart } from "lucide-react";
-import { toast } from "sonner";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import productBoxImage from "@/assets/product-box.png";
 
 const ProductPage = () => {
   const { handle } = useParams<{ handle: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
-  const [purchaseType, setPurchaseType] = useState<"subscription" | "one_time">("subscription");
-  
-  const addItem = useCartStore((state) => state.addItem);
-
-  useEffect(() => {
-    const loadProduct = async () => {
-      if (!handle) return;
-      try {
-        const data = await fetchProductBySlug(handle);
-        setProduct(data);
-      } catch (error) {
-        console.error("Failed to fetch product:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProduct();
-  }, [handle]);
-
-  const handleAddToCart = () => {
-    if (!product) return;
-
-    addItem(product, quantity, purchaseType);
-
-    toast.success("Added to cart!", {
-      description: `${quantity}x ${product.title}`,
-      position: "top-center",
-    });
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <Header />
-        <div className="pt-32 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      </div>
-    );
-  }
+  const product = handle ? getBoxBySlug(handle) : null;
 
   if (!product) {
     return (
@@ -71,10 +25,6 @@ const ProductPage = () => {
       </div>
     );
   }
-
-  const displayPrice = purchaseType === "subscription" 
-    ? product.subscription_price 
-    : product.one_time_price;
 
   return (
     <div className="min-h-screen">
@@ -93,7 +43,7 @@ const ProductPage = () => {
             {/* Image */}
             <div className="aspect-square rounded-3xl overflow-hidden bg-secondary/30">
               <img
-                src={product.image_url || productBoxImage}
+                src={productBoxImage}
                 alt={product.title}
                 className="w-full h-full object-cover"
               />
@@ -105,132 +55,46 @@ const ProductPage = () => {
                 {product.title}
               </h1>
 
-              {product.serves && (
-                <p className="text-muted-foreground mb-4">
-                  Perfect for {product.serves}
-                </p>
-              )}
+              <p className="text-muted-foreground mb-4">
+                A good fit for {product.serves}
+              </p>
 
-              {/* Purchase Type Toggle */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold mb-3">
-                  Purchase Type
-                </label>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => setPurchaseType("subscription")}
-                    className={`flex-1 px-4 py-3 rounded-lg border-2 transition-all text-left ${
-                      purchaseType === "subscription"
-                        ? "border-primary bg-primary/10"
-                        : "border-border hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="font-semibold">Subscribe & Save</div>
-                    <div className="text-sm text-muted-foreground">Best value • Weekly delivery</div>
-                  </button>
-                  <button
-                    onClick={() => setPurchaseType("one_time")}
-                    className={`flex-1 px-4 py-3 rounded-lg border-2 transition-all text-left ${
-                      purchaseType === "one_time"
-                        ? "border-primary bg-primary/10"
-                        : "border-border hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="font-semibold">One-Time Purchase</div>
-                    <div className="text-sm text-muted-foreground">No commitment</div>
-                  </button>
-                </div>
-              </div>
-
-              {/* Price Display */}
-              <div className="mb-6">
+              <div className="mb-8 space-y-3">
                 <div className="flex items-baseline gap-3">
                   <span className="text-4xl font-bold text-primary">
-                    {formatPrice(displayPrice)}
+                    {formatPrice(product.oneTimePrice)}
                   </span>
-                  <span className="text-lg text-muted-foreground">/box</span>
-                  {purchaseType === "subscription" && (
-                    <span className="text-sm text-primary font-medium bg-primary/10 px-2 py-1 rounded">
-                      Save {formatPrice(product.one_time_price - product.subscription_price)}
-                    </span>
-                  )}
+                  <span className="text-lg text-muted-foreground">one-time</span>
+                </div>
+                <div className="text-muted-foreground">
+                  {formatPrice(product.subscriptionPrice)} subscription after first-month commitment
                 </div>
               </div>
 
-              {/* Description */}
-              <div className="text-muted-foreground text-lg mb-8 space-y-4">
-                {(() => {
-                  const desc = product.description || "Fresh, seasonal fruits picked at peak ripeness and delivered straight to your door.";
-                  const parts = desc.split(/\*\*([^*]+)\*\*/g);
-                  
-                  if (parts.length <= 1) {
-                    return <p>{desc}</p>;
-                  }
-                  
-                  const elements: React.ReactNode[] = [];
-                  
-                  for (let i = 1; i < parts.length; i += 2) {
-                    const label = parts[i]?.trim();
-                    const content = parts[i + 1]?.trim();
-                    
-                    if (label && content) {
-                      elements.push(
-                        <div key={label} className="mb-4">
-                          <h3 className="font-semibold text-foreground mb-1">{label}</h3>
-                          <p className="whitespace-pre-line">{content}</p>
-                        </div>
-                      );
-                    }
-                  }
-                  
-                  return elements;
-                })()}
+              <div className="text-muted-foreground text-lg mb-8 space-y-5">
+                {product.sections.map((section) => (
+                  <div key={section.label}>
+                    <h3 className="font-semibold text-foreground mb-2">{section.label}</h3>
+                    <p className="whitespace-pre-line">{section.content}</p>
+                  </div>
+                ))}
               </div>
 
-              {/* Quantity */}
-              <div className="mb-8">
-                <label className="block text-sm font-semibold mb-3">
-                  Quantity
-                </label>
-                <div className="flex items-center gap-3 bg-secondary/50 rounded-lg p-2 w-fit">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1}
-                  >
-                    <Minus className="w-4 h-4" />
-                  </Button>
-                  <span className="w-12 text-center font-semibold text-lg">
-                    {quantity}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setQuantity(quantity + 1)}
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
+              <div className="rounded-xl bg-secondary/40 p-5 mb-8 text-sm text-muted-foreground">
+                Checkout, subscriptions, and order management will be handled in Shopify.
               </div>
 
-              {/* Add to Cart */}
               <Button
                 variant="hero"
                 size="xl"
                 className="w-full"
-                onClick={handleAddToCart}
-                disabled={!product.available}
+                asChild
               >
-                <ShoppingCart className="w-5 h-5" />
-                Add to Cart
+                <a href={product.shopifyUrl || "#"}>
+                  Shopify Checkout Coming Soon
+                  <ExternalLink className="w-5 h-5" />
+                </a>
               </Button>
-
-              {!product.available && (
-                <p className="text-destructive text-sm mt-3 text-center">
-                  This product is currently out of stock
-                </p>
-              )}
             </div>
           </div>
         </div>

@@ -13,8 +13,8 @@ export interface Box {
 export const boxes: Box[] = [
   {
     id: "small",
-    title: "Harvest Box Small",
-    slug: "small",
+    title: "The Peck",
+    slug: "the-peck",
     shortDescription:
       "A weekly fruit box for 1 to 2 people, built around a practical mix of staples and seasonal fruit.",
     serves: "1 to 2 people",
@@ -24,7 +24,7 @@ export const boxes: Box[] = [
       {
         label: "About",
         content:
-          "The Small Harvest Box is built for 1 to 2 people who want good fruit at home without having to think about it. Each week, we pack a balanced mix of familiar staples and seasonal fruit based on what looks best and tastes best that week.",
+          "The Peck is built for 1 to 2 people who want good fruit at home without having to think about it. Each week, we pack a balanced mix of familiar staples and seasonal fruit based on what looks best and tastes best that week.",
       },
       {
         label: "Typical box",
@@ -40,8 +40,8 @@ export const boxes: Box[] = [
   },
   {
     id: "family",
-    title: "Harvest Box Family",
-    slug: "family",
+    title: "The Bushel",
+    slug: "the-bushel",
     shortDescription:
       "A larger weekly fruit box for 3 to 5 people, with more volume and enough fruit to keep a busy household going through the week.",
     serves: "3 to 5 people",
@@ -51,7 +51,7 @@ export const boxes: Box[] = [
       {
         label: "About",
         content:
-          "The Family Harvest Box is built for households that go through fruit quickly. Each week, we pack a larger mix of staple fruit and seasonal favourites, with enough volume to make the box feel useful for real family life, not just like a top-up.",
+          "The Bushel is built for households that go through fruit quickly. Each week, we pack a larger mix of staple fruit and seasonal favourites, with enough volume to make the box feel useful for real family life, not just like a top-up.",
       },
       {
         label: "Typical box",

@@ -27,6 +27,10 @@ export const ProductCard = ({ box }: ProductCardProps) => {
           {box.title}
         </h3>
         
+        <p className="text-muted-foreground text-sm mb-2">
+          A good fit for {box.serves}
+        </p>
+
         <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
           {box.shortDescription}
         </p>

@@ -21,24 +21,24 @@ export const Hero = () => {
           </div>
           
           <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            Freshness Delivered.{" "}
-            <span className="text-primary">Health Made Easy.</span>
+            Fresh fruit for the week,{" "}
+            <span className="text-primary">delivered to your door.</span>
           </h1>
           
-          <p className="text-xl text-muted-foreground mb-10 max-w-xl mx-auto opacity-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            Fuel your healthy lifestyle effortlessly with vibrant, farm-fresh fruit delivered straight to your door.
+          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto opacity-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            Seasonal fruit, local when possible, and a couple of staples to keep the house stocked. Harvest Box makes it easy to keep good fruit at home.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <Button variant="hero" size="xl" asChild>
               <a href="#boxes">
-                Get Your Fresh Box Today!
+                Join Harvest Box
                 <ArrowRight className="w-5 h-5" />
               </a>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-foreground/30 text-foreground hover:bg-foreground/10">
               <a href="#how-it-works">
-                Learn More
+                How It Works
               </a>
             </Button>
           </div>

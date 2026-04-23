@@ -3,18 +3,18 @@ import { Package, Truck, Heart } from "lucide-react";
 const steps = [
   {
     icon: Package,
-    title: "Choose Your Box",
-    description: "Select the perfect size to fit your household's snacking needs.",
-  },
-  {
-    icon: Truck,
-    title: "Delivered Weekly",
-    description: "Your fresh fruit box arrives reliably at your doorstep, week after week.",
+    title: "Pick Your Box",
+    description: "Choose Small or Family, depending on how much fruit your household goes through in a week.",
   },
   {
     icon: Heart,
-    title: "Enjoy & Thrive",
-    description: "Savor delicious, healthy snacks without the effort.",
+    title: "Order by Sunday Night",
+    description: "That week’s orders close Sunday night so there’s time to source and pack properly.",
+  },
+  {
+    icon: Truck,
+    title: "Get Your Box on Thursday",
+    description: "We source on Wednesday, pack close to delivery day, and bring your fruit to your door on Thursday.",
   },
 ];
 
@@ -27,7 +27,7 @@ export const HowItWorks = () => {
             How It Works
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Getting fresh fruit delivered to your door is as easy as 1-2-3.
+            Simple weekly fruit delivery, built to fit real household routines.
           </p>
         </div>
 

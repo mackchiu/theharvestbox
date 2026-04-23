@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 export const Footer = () => {
@@ -17,8 +17,7 @@ export const Footer = () => {
             </Link>
             
             <p className="text-cream/70 max-w-sm leading-relaxed">
-              Bringing fresh fruits from farm to your table. 
-              Subscribe today and taste the difference.
+              Fresh fruit for the week, delivered to your door. Seasonal fruit, local when possible, and a couple of staples to keep the house stocked.
             </p>
           </div>
           
@@ -37,26 +36,22 @@ export const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-cream/70 hover:text-cream transition-colors">
-                  FAQs
+                  FAQ
                 </a>
               </li>
             </ul>
           </div>
           
           <div>
-            <h4 className="font-display text-lg font-semibold mb-4 text-cream">Contact Us</h4>
+            <h4 className="font-display text-lg font-semibold mb-4 text-cream">Contact</h4>
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-cream/70">
                 <Mail className="w-4 h-4" />
-                hello@theharvestbox.com
-              </li>
-              <li className="flex items-center gap-2 text-cream/70">
-                <Phone className="w-4 h-4" />
-                (555) 123-4567
+                hello@theharvestbox.ca
               </li>
               <li className="flex items-center gap-2 text-cream/70">
                 <MapPin className="w-4 h-4" />
-                Sunny Valley Farm, CA
+                Toronto delivery area, Ontario
               </li>
             </ul>
           </div>

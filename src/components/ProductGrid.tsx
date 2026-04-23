@@ -39,11 +39,10 @@ export const ProductGrid = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Our Fruit Boxes
+            Choose Your Box
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Choose from our selection of seasonal, organic fruit boxes. 
-            Delivered fresh to your door every week.
+            Pick Small or Family. Each week follows a best-available seasonal mix, with staple fruit included to keep the house stocked.
           </p>
         </div>
 
@@ -51,10 +50,10 @@ export const ProductGrid = () => {
           <div className="text-center py-20 bg-secondary/30 rounded-3xl">
             <Package className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
             <h3 className="font-display text-2xl font-semibold text-foreground mb-2">
-              No products yet
+              Boxes coming soon
             </h3>
             <p className="text-muted-foreground max-w-md mx-auto">
-              We're preparing our fruit boxes for you! Check back soon or contact us to learn more about our upcoming offerings.
+              We&apos;re getting this week&apos;s box setup ready. Check back soon for Small and Family box details.
             </p>
           </div>
         ) : (

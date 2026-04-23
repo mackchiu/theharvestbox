@@ -3,23 +3,23 @@ import { Sparkles, Clock, Award, Heart } from "lucide-react";
 const features = [
   {
     icon: Sparkles,
-    title: "Peak Freshness",
-    description: "Hand-picked and packed just for you, guaranteeing ripeness and flavor.",
+    title: "Fresh Weekly Fruit",
+    description: "A practical weekly fruit box without another grocery run in the middle of the week.",
   },
   {
     icon: Clock,
-    title: "Ultimate Convenience",
-    description: "Delivered weekly, saving you precious time and hassle.",
+    title: "Best-Available Seasonal Mix",
+    description: "We build each week around what looks good, tastes good, and makes sense to buy that week.",
   },
   {
     icon: Heart,
-    title: "Healthy Habits Made Simple",
-    description: "A diverse selection of fruits to keep your energy levels high and your body happy.",
+    title: "Staples Included",
+    description: "Alongside seasonal fruit, we keep a couple of familiar staples in the box for reliability.",
   },
   {
     icon: Award,
-    title: "Consistent Quality",
-    description: "We partner with trusted growers to bring you the best, every time.",
+    title: "Local Delivery Area",
+    description: "We keep deliveries within a tight local service area so the operation stays practical and dependable.",
   },
 ];
 
@@ -29,10 +29,10 @@ export const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Why Choose The Harvest Box?
+            What Makes Harvest Box Different
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Tired of grocery store runs for fruit that isn't quite fresh? We bring the orchard to you.
+            We keep it simple, seasonal, and useful for real households.
           </p>
         </div>
 

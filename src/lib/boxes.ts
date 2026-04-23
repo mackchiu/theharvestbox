@@ -29,7 +29,7 @@ export const boxes: Box[] = [
       {
         label: "Typical box",
         content:
-          "A typical Small box may include bananas, apples, oranges, pears, grapes, and one seasonal fruit such as mango.",
+          "A typical Peck may include bananas, apples, oranges, pears, grapes, and one seasonal fruit such as mango.",
       },
       {
         label: "Good to know",
@@ -56,7 +56,7 @@ export const boxes: Box[] = [
       {
         label: "Typical box",
         content:
-          "A typical Family box may include bananas, apples, oranges, pears, grapes, pineapple, and one seasonal fruit such as mango.",
+          "A typical Bushel may include bananas, apples, oranges, pears, grapes, pineapple, and one seasonal fruit such as mango.",
       },
       {
         label: "Good to know",

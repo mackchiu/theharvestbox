@@ -10,7 +10,7 @@ export const ProductGrid = () => {
             Choose Your Box
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Pick Small or Family. Each week follows a best-available seasonal mix, with staple fruit included to keep the house stocked.
+            Choose The Peck or The Bushel. Each week follows a best-available seasonal mix, with staple fruit included to keep the house stocked.
           </p>
         </div>
 

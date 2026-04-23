@@ -4,7 +4,7 @@ const steps = [
   {
     icon: Package,
     title: "Pick Your Box",
-    description: "Choose Small or Family, depending on how much fruit your household goes through in a week.",
+    description: "Choose The Peck or The Bushel, depending on how much fruit your household goes through in a week.",
   },
   {
     icon: Heart,

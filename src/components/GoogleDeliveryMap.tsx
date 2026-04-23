@@ -11,10 +11,53 @@ declare global {
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const polygonPath = [
-  { lat: 43.765, lng: -79.496 },
-  { lat: 43.780, lng: -79.347 },
-  { lat: 43.706, lng: -79.341 },
-  { lat: 43.676, lng: -79.489 },
+  // Finch Ave W, west to east
+  { lat: 43.7735, lng: -79.5205 },
+  { lat: 43.7737, lng: -79.5075 },
+  { lat: 43.7738, lng: -79.4925 },
+  { lat: 43.7740, lng: -79.4760 },
+  { lat: 43.7742, lng: -79.4590 },
+  { lat: 43.7745, lng: -79.4420 },
+  { lat: 43.7747, lng: -79.4250 },
+  { lat: 43.7750, lng: -79.4080 },
+  { lat: 43.7752, lng: -79.3910 },
+  { lat: 43.7754, lng: -79.3740 },
+  { lat: 43.7755, lng: -79.3590 },
+  { lat: 43.7756, lng: -79.3475 },
+
+  // 404 / DVP, north to south
+  { lat: 43.7700, lng: -79.3455 },
+  { lat: 43.7600, lng: -79.3430 },
+  { lat: 43.7480, lng: -79.3415 },
+  { lat: 43.7360, lng: -79.3405 },
+  { lat: 43.7240, lng: -79.3405 },
+  { lat: 43.7120, lng: -79.3415 },
+  { lat: 43.7000, lng: -79.3435 },
+  { lat: 43.6890, lng: -79.3470 },
+  { lat: 43.6800, lng: -79.3525 },
+  { lat: 43.6725, lng: -79.3605 },
+
+  // St. Clair Ave W, east to west
+  { lat: 43.6715, lng: -79.3720 },
+  { lat: 43.6710, lng: -79.3880 },
+  { lat: 43.6708, lng: -79.4040 },
+  { lat: 43.6708, lng: -79.4200 },
+  { lat: 43.6710, lng: -79.4360 },
+  { lat: 43.6713, lng: -79.4520 },
+  { lat: 43.6718, lng: -79.4680 },
+  { lat: 43.6725, lng: -79.4830 },
+  { lat: 43.6732, lng: -79.4945 },
+
+  // Black Creek / Hwy 400 corridor, south to north
+  { lat: 43.6810, lng: -79.4955 },
+  { lat: 43.6940, lng: -79.4965 },
+  { lat: 43.7070, lng: -79.4975 },
+  { lat: 43.7200, lng: -79.4995 },
+  { lat: 43.7330, lng: -79.5025 },
+  { lat: 43.7460, lng: -79.5065 },
+  { lat: 43.7580, lng: -79.5115 },
+  { lat: 43.7670, lng: -79.5165 },
+  { lat: 43.7735, lng: -79.5205 },
 ];
 
 const center = { lat: 43.725, lng: -79.415 };

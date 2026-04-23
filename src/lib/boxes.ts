@@ -10,6 +10,9 @@ export interface Box {
   sections: { label: string; content: string }[];
 }
 
+const peckShopifyUrl = import.meta.env.VITE_SHOPIFY_PECK_URL || "";
+const bushelShopifyUrl = import.meta.env.VITE_SHOPIFY_BUSHEL_URL || "";
+
 export const boxes: Box[] = [
   {
     id: "small",
@@ -20,6 +23,7 @@ export const boxes: Box[] = [
     serves: "1 to 2 people",
     oneTimePrice: 45,
     subscriptionPrice: 40,
+    shopifyUrl: peckShopifyUrl,
     sections: [
       {
         label: "About",
@@ -47,6 +51,7 @@ export const boxes: Box[] = [
     serves: "3 to 5 people",
     oneTimePrice: 65,
     subscriptionPrice: 60,
+    shopifyUrl: bushelShopifyUrl,
     sections: [
       {
         label: "About",

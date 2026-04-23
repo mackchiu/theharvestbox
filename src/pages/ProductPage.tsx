@@ -91,7 +91,7 @@ const ProductPage = () => {
                 asChild
               >
                 <a href={product.shopifyUrl || "#"}>
-                  Shopify Checkout Coming Soon
+                  {product.shopifyUrl ? "Continue to Shopify" : "Shopify Link Coming Soon"}
                   <ExternalLink className="w-5 h-5" />
                 </a>
               </Button>
